@@ -17,6 +17,9 @@ import java.util.Map;
  * @date 2021/4/13-23:29
  */
 public class BaseController {
+
+    public static final String CONTENT_TYPE_FORMED="application/x-www-form-urlencoded";
+
     /**
      * 定义exceptionHandler解决未被controller层吸收的exception
      * @param request
