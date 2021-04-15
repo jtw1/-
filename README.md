@@ -25,3 +25,9 @@ spring boot+Mybatis
 2. 将 OTP 验证码通对应用户的手机号关联（一般使用Redis处理，此处采用 session 模仿实现）使用spring注入方式注入一个HttpServletRequest对象。该对象其实是通过 spring bean 包装的 request 对象，本质是 proxy 模式（spring 在注入 HttpServletRequest 时，发现如果注入的是 一个 ObjectFactory 类型的对象时，就会将注入的 bean 替换成一个 JDK 动态代理对象，代理对象在执行 HttpServletRequest 对象里的方法时，就会通过 RequestObjectFactory.getObject() 获取一个 新的 request 对象来执行。），即多例模式?。
 Spring能实现在多线程环境下，将各个线程的request进行隔离，且准确无误的进行注入，奥秘就是ThreadLocal. 它的内部拥有 ThreadLocal 方式的 map，去让用户在每个线程中处理自己对应的 request 中的数据，并且有ThreadLocal清除的机制。
 3. 将 OTP 验证码通过短信通道发送给用户
+> 解决跨域问题
+
+添加注解  
+`@CrossOrigin(allowCredentials = "true",allowedHeaders = "*")` 
+并且需要配合前端设置 xhrFields授信后使得跨域session共享
+前端Ajax请求设置   `xhrFields:{withCredentials:true}`

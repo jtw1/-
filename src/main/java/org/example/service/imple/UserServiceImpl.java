@@ -61,8 +61,14 @@ public class UserServiceImpl implements UserService {
 
         //实现model->dataObject方法
         UserDo userDo = convertFromModel(userModel);
-        userDoMapper.insertSelective(userDo);
+        try {
+            userDoMapper.insertSelective(userDo);
 
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        userModel.setId(userDo.getId());
         //实现model->UserPwdDo方法
         UserPwdDo userPwdDo=convertPwdFromModel(userModel);
         userPwdDoMapper.insertSelective(userPwdDo);
