@@ -9,8 +9,11 @@ import org.example.error.BusinessException;
 import org.example.error.EmBusinessError;
 import org.example.service.UserService;
 import org.example.service.model.UserModel;
+import org.example.validator.ValidationResult;
+import org.example.validator.ValidatorImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,8 @@ public class UserServiceImpl implements UserService {
     private UserDoMapper userDoMapper;
     @Autowired
     private UserPwdDoMapper userPwdDoMapper;
+    @Autowired
+    private ValidatorImpl validator;
 
     @Override
     public UserModel getUserById(Integer id) {
@@ -49,11 +54,16 @@ public class UserServiceImpl implements UserService {
         if (userModel==null){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
         }
-        if (StringUtils.isEmpty(userModel.getName())
-                || userModel.getGender()==null
-                || userModel.getAge()==null
-                || StringUtils.isEmpty(userModel.getTelephone())){
-            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+
+//        if (StringUtils.isEmpty(userModel.getName())
+//                || userModel.getGender()==null
+//                || userModel.getAge()==null
+//                || StringUtils.isEmpty(userModel.getTelephone())){
+//            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+//        }
+        ValidationResult result = validator.validate(userModel);
+        if (result.isHasErrors()){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,result.getErrorMsg());
         }
         //这里使用insertSelective()而不使用insert(),是因为前者在属性赋值之前有个判空操作，如果是null就跳过，不为null则执行insert
         // 若使用insert()，当对应字段为null时，会用null字段覆盖数据库的默认值
@@ -64,8 +74,9 @@ public class UserServiceImpl implements UserService {
         try {
             userDoMapper.insertSelective(userDo);
 
-        }catch (Exception e){
-            e.printStackTrace();
+        }catch (DuplicateKeyException e){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"手机号已重复注册");
+
         }
 
         userModel.setId(userDo.getId());
@@ -75,6 +86,30 @@ public class UserServiceImpl implements UserService {
 
         return;
     }
+
+    /**
+     * 检验用户登录是否合法
+     * @param telephone
+     * @param encrptPassword
+     * @return
+     */
+    @Override
+    public UserModel validateLogin(String telephone, String encrptPassword) throws BusinessException {
+        //通过用户手机获取用户信息
+        UserDo userDo = userDoMapper.selectByTelephone(telephone);
+        if (userDo==null){
+            throw new BusinessException(EmBusinessError.USER_LOGIN_FAIL);
+        }
+        UserPwdDo userPwdDo=userPwdDoMapper.selectByUserId(userDo.getId());
+        UserModel userModel=convertFromDataObject(userDo,userPwdDo);
+
+        //比对用户信息内加密的密码是否和传输进来的密码相匹配
+        if (!StringUtils.equals(encrptPassword,userModel.getEncrptPassword())){
+            throw new BusinessException(EmBusinessError.USER_LOGIN_FAIL);
+        }
+        return userModel;
+    }
+
 
     /**
      * model->dataObject方法
