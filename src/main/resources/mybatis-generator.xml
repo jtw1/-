@@ -35,7 +35,7 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="org.example.dao"  targetProject="src/main/java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
-        <!--生成对应的表及类名-->
+        <!--生成对应的表及类名  用户表-->
         <table tableName="user_info" domainObjectName="UserDo" >
 <!--            enableCountByExample="false"-->
 <!--            enableUpdateByexample="false" enableDeleteByexample="false"-->
@@ -48,6 +48,12 @@
 <!--            <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />-->
         </table>
         <table tableName="user_pwd" domainObjectName="UserPwdDo" >
+        </table>
+
+        <!--商品表以及商品库存表-->
+        <table tableName="item" domainObjectName="ItemDo">
+        </table>
+        <table tableName="item_stock" domainObjectName="ItemStockDo">
         </table>
     </context>
 </generatorConfiguration>
