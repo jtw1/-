@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="febbbe5c-a01e-47b2-b7dc-d39b9e9331a3" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="HTML File" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="D:\apache-maven-3.6.3\local_repo" />
+        <option name="mavenHome" value="D:/apache-maven-3.6.3" />
+        <option name="userSettingsFile" value="D:\apache-maven-3.6.3\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1r0ulsAguqZbYYYQtRbMQMzXNfY" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/org/example/static/sources/js" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.externalResources" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Project\Java project\miaosha\src\main\java\org\example\static\sources\js" />
+      <recent name="E:\Project\Java project\miaosha\src\main\java\org\example\static\sources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Project\Java project\miaosha\src\main\java\org\example\static\sources" />
+      <recent name="E:\Project\Java project\miaosha\src\main\java\org\example\static\pages" />
+      <recent name="E:\Project\Java project\miaosha\src\main\resources" />
+      <recent name="E:\Project\Java project\miaosha\src\main\resources\static" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.App">
+    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.example.App" />
+      <module name="miaosha" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="miaosha [mybatis-generator:generate]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="mybatis-generator:generate" />
+              </list>
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.App" />
+      <item itemvalue="Maven.miaosha [mybatis-generator:generate]" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.App" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="febbbe5c-a01e-47b2-b7dc-d39b9e9331a3" name="Default Changelist" comment="" />
+      <created>1618125482726</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1618125482726</updated>
+      <workItem from="1618125484058" duration="15389000" />
+      <workItem from="1618228815715" duration="692000" />
+      <workItem from="1618233332604" duration="5732000" />
+      <workItem from="1618315685812" duration="1365000" />
+      <workItem from="1618323404237" duration="5021000" />
+      <workItem from="1618400339561" duration="13521000" />
+      <workItem from="1618488241213" duration="13634000" />
+      <workItem from="1618573783183" duration="1284000" />
+      <workItem from="1618729984188" duration="16555000" />
+      <workItem from="1618833910656" duration="13905000" />
+    </task>
+    <task id="LOCAL-00001" summary="电商秒杀">
+      <created>1618137706916</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1618137706916</updated>
+    </task>
+    <task id="LOCAL-00002" summary="电商秒杀">
+      <created>1618240049630</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1618240049630</updated>
+    </task>
+    <task id="LOCAL-00003" summary="电商秒杀">
+      <created>1618328084250</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1618328084251</updated>
+    </task>
+    <task id="LOCAL-00004" summary="电商秒杀">
+      <created>1618414022136</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1618414022137</updated>
+    </task>
+    <task id="LOCAL-00005" summary="电商秒杀">
+      <created>1618502699470</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1618502699470</updated>
+    </task>
+    <task id="LOCAL-00006" summary="电商秒杀">
+      <created>1618757396061</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1618757396061</updated>
+    </task>
+    <task id="LOCAL-00007" summary="电商秒杀">
+      <created>1618847152446</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1618847152446</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="电商秒杀" />
+    <option name="LAST_COMMIT_MESSAGE" value="电商秒杀" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="54" y="136" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1618132534478">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="54" y="136" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.864@0.0.1536.864" timestamp="1618132534478" />
+    <state x="958" y="142" key="#com.intellij.ide.util.MemberChooser" timestamp="1618841507536">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="958" y="142" key="#com.intellij.ide.util.MemberChooser/0.0.1536.864@0.0.1536.864" timestamp="1618841507536" />
+    <state x="396" y="357" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1618414426526">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="396" y="357" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1536.864@0.0.1536.864" timestamp="1618414426526" />
+    <state x="366" y="21" key="CommitChangelistDialog2" timestamp="1618847147283">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="366" y="21" key="CommitChangelistDialog2/0.0.1536.864@0.0.1536.864" timestamp="1618847147283" />
+    <state x="102" y="82" width="1350" height="678" key="DiffContextDialog" timestamp="1618838650680">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="102" y="82" width="1350" height="678" key="DiffContextDialog/0.0.1536.864@0.0.1536.864" timestamp="1618838650680" />
+    <state x="549" y="173" key="FileChooserDialogImpl" timestamp="1618145279901">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="549" y="173" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1618145279901" />
+    <state width="722" height="146" key="GridCell.Tab.0.bottom" timestamp="1618845532523">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="722" height="146" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1618845532523" />
+    <state width="722" height="146" key="GridCell.Tab.0.center" timestamp="1618845532523">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="722" height="146" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1618845532523" />
+    <state width="722" height="146" key="GridCell.Tab.0.left" timestamp="1618845532523">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="722" height="146" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1618845532523" />
+    <state width="722" height="146" key="GridCell.Tab.0.right" timestamp="1618845532523">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="722" height="146" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1618845532523" />
+    <state width="1492" height="181" key="GridCell.Tab.1.bottom" timestamp="1618840369115">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1492" height="181" key="GridCell.Tab.1.bottom/0.0.1536.864@0.0.1536.864" timestamp="1618840369115" />
+    <state width="1492" height="181" key="GridCell.Tab.1.center" timestamp="1618840369114">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1492" height="181" key="GridCell.Tab.1.center/0.0.1536.864@0.0.1536.864" timestamp="1618840369114" />
+    <state width="1492" height="181" key="GridCell.Tab.1.left" timestamp="1618840369114">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1492" height="181" key="GridCell.Tab.1.left/0.0.1536.864@0.0.1536.864" timestamp="1618840369114" />
+    <state width="1492" height="181" key="GridCell.Tab.1.right" timestamp="1618840369114">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1492" height="181" key="GridCell.Tab.1.right/0.0.1536.864@0.0.1536.864" timestamp="1618840369114" />
+    <state x="598" y="90" key="Maven.ArtifactSearchDialog" timestamp="1618494755162">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="598" y="90" key="Maven.ArtifactSearchDialog/0.0.1536.864@0.0.1536.864" timestamp="1618494755162" />
+    <state x="270" y="14" key="SettingsEditor" timestamp="1618847130910">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="270" y="14" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1618847130910" />
+    <state x="361" y="165" key="Vcs.Push.Dialog.v2" timestamp="1618848012379">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="361" y="165" key="Vcs.Push.Dialog.v2/0.0.1536.864@0.0.1536.864" timestamp="1618848012379" />
+    <state width="1534" height="862" key="com.intellij.byteCodeViewer.ShowByteCodeAction" timestamp="1618233492907">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state width="1534" height="862" key="com.intellij.byteCodeViewer.ShowByteCodeAction/0.0.1536.864@0.0.1536.864" timestamp="1618233492907" />
+    <state x="449" y="256" key="com.intellij.ide.util.TipDialog" timestamp="1618834230938">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="449" y="256" key="com.intellij.ide.util.TipDialog/0.0.1536.864@0.0.1536.864" timestamp="1618834230938" />
+    <state x="944" y="100" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1618237392693">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="944" y="100" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1536.864@0.0.1536.864" timestamp="1618237392693" />
+    <state x="814" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1618844443616">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="814" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1536.864@0.0.1536.864" timestamp="1618844443616" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/service/imple/UserServiceImpl.java</url>
+          <line>40</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/service/imple/UserServiceImpl.java</url>
+          <line>106</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/service/imple/UserServiceImpl.java</url>
+          <line>102</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/service/imple/UserServiceImpl.java</url>
+          <line>139</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/service/imple/UserServiceImpl.java</url>
+          <line>97</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/service/imple/UserServiceImpl.java</url>
+          <line>83</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/service/imple/UserServiceImpl.java</url>
+          <line>81</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="userDo.getId()" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>

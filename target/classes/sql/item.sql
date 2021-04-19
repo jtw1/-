@@ -1,0 +1,12 @@
+CREATE TABLE `miasha`.`item` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(64) NOT NULL DEFAULT '',
+  `price` DOUBLE NOT NULL DEFAULT 0,
+  `description` VARCHAR(500) NOT NULL DEFAULT '',
+  `sales` INT(11) NOT NULL DEFAULT 0,
+  `imgUrl` VARCHAR(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci
+COMMENT = '商品表';
