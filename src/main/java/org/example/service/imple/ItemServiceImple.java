@@ -13,15 +13,19 @@ import org.example.validator.ValidationResult;
 import org.example.validator.ValidatorImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description
  * @date 2021/4/19-22:11
  */
+@Service
 public class ItemServiceImple implements ItemService {
     @Autowired
     private ValidatorImpl validator;
@@ -51,9 +55,19 @@ public class ItemServiceImple implements ItemService {
         return this.getItemById(itemModel.getId());
     }
 
+    /**
+     * 商品列表浏览
+     * @return
+     */
     @Override
     public List<ItemModel> listItem() {
-        return null;
+        List<ItemDo> itemDoList=itemDoMapper.listItem();
+        List<ItemModel> itemModelList=itemDoList.stream().map(itemDo -> {
+            ItemStockDo itemStockDo=itemStockDoMapper.selectByItemId(itemDo.getId());
+            ItemModel itemModel=this.convertToModelFromDataObject(itemDo,itemStockDo);
+            return itemModel;
+        }).collect(Collectors.toList());
+        return itemModelList;
     }
 
     @Override
