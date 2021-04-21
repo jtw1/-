@@ -85,6 +85,20 @@ public class ItemServiceImple implements ItemService {
     }
 
     /**
+     * 库存扣减
+     * @param itemId 商品id
+     * @param amount 需要的商品数量
+     * @return
+     */
+    @Override
+    @Transactional
+    public boolean decreaseStock(Integer itemId, Integer amount) {
+        int affectedRow = itemStockDoMapper.decreaseStock(itemId, amount);
+        //true：更新库存成功    false：更新库存失败
+        return affectedRow>0?true:false;
+    }
+
+    /**
      * 实现 ItemModel->ItemDo
      * @param itemModel
      * @return

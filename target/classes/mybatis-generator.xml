@@ -55,5 +55,8 @@
         </table>
         <table tableName="item_stock" domainObjectName="ItemStockDo">
         </table>
+        <!--用户下单表-->
+        <table tableName="order_info" domainObjectName="OrderDo">
+        </table>
     </context>
 </generatorConfiguration>
