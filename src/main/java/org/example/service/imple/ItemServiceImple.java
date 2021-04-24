@@ -99,6 +99,18 @@ public class ItemServiceImple implements ItemService {
     }
 
     /**
+     * 下单成功之后，商品销量增加amount
+     * @param itemId 商品id
+     * @param amount 商品下单数量
+     * @throws BusinessException
+     */
+    @Override
+    @Transactional
+    public void increaseSales(Integer itemId, Integer amount) throws BusinessException {
+        itemDoMapper.increaseSales(itemId,amount);
+    }
+
+    /**
      * 实现 ItemModel->ItemDo
      * @param itemModel
      * @return

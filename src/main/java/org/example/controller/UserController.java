@@ -50,7 +50,11 @@ public class UserController extends BaseController{
         UserModel userModel=userService.validateLogin(telephone,this.EncodeByMd5(password));
 
         //将登录凭证加入到用户登陆成功的session内
-        this.httpServletRequest.getSession().setAttribute("IS_LOGIN",true);
+        try {
+            this.httpServletRequest.getSession().setAttribute("IS_LOGIN",true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.httpServletRequest.getSession().setAttribute("LOGIN_USR",userModel);
         //返回给前端一个正确的信息
         return CommonReturnType.create(null);
