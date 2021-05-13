@@ -56,15 +56,15 @@
 <!--        <table tableName="item_stock" domainObjectName="ItemStockDo">-->
 <!--        </table>-->
 <!--        &lt;!&ndash;用户下单表&ndash;&gt;-->
-<!--        <table tableName="order_info" domainObjectName="OrderDo">-->
-<!--        </table>-->
+            <table tableName="order_info" domainObjectName="OrderDo">
+            </table>
 <!--        &lt;!&ndash;自增序列表&ndash;&gt;-->
 <!--        <table tableName="sequence_info" domainObjectName="SequenceDo">-->
 <!--        </table>-->
 
         <!--秒杀订单表-->
-        <table tableName="promo" domainObjectName="PromoDo">
-        </table>
+<!--        <table tableName="promo" domainObjectName="PromoDo">-->
+<!--        </table>-->
 
     </context>
 </generatorConfiguration>

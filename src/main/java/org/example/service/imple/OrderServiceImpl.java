@@ -70,12 +70,15 @@ public class OrderServiceImpl implements OrderService {
         orderModel.setItemId(itemId);
         orderModel.setAmount(amount);
         orderModel.setItemPrice(itemModel.getPrice());
-        orderModel.setOrderPrice(itemModel.getPrice().multiply(new BigDecimal(amount)));
+        orderModel.setOrderPrice(orderModel.getItemPrice().multiply(new BigDecimal(amount)));
 
         // 生成订单号
         orderModel.setId(generateOrderNumber());
+
         OrderDo orderDo=convertFromOrderModel(orderModel);
+
         orderDoMapper.insertSelective(orderDo);
+
 
         //加上商品销量
         itemService.increaseSales(itemId,amount);

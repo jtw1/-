@@ -34,3 +34,24 @@ Spring能实现在多线程环境下，将各个线程的request进行隔离，�
 > 使用手机号注册用户时，如何避免同一手机号多次注册
 
 在数据库中给用户表的手机号字段添加唯一索引  点击对应table->右键更改table->index，然后index name随意，type为unique，然后选中手机号字段，storage type选择为BTREE 即可
+
+跨域感知session
+跨域感知session需要解决两个问题，第一个是解决跨域问题，第二个是解决跨域cookie传输问题
+
+跨域问题
+解决跨域问题有很多种方式，可以参考本章最后的扩展资料跨域问题的解决方式，我们在一开始的课程视频中使用了springboot自带的crossOrigin注解，如下（注意，和目前的课程中不完全一致，如何演进的继续往下看）
+
+@CrossOrigin(origins = {"*"},allowedHeaders = "*")
+这个注解一加后，所有的http response头上都会加上
+Access-Control-Allow-Origin * 以及
+Access-Control-Allow-Headers * 两个头部，这样可以满足CORS的跨域定义，我们的ajax看到这两个头部就认定对应的域名接收任何来自或不来自于本域的请求
+
+跨域传递cookie的问题
+跨域和跨域传递cookie是两个不同纬度的问题，我们依靠上述的方式解决了跨域的问题，但是要做到跨域感知session需要解决在跨域的前提下将cookie也能传上去，这个时候就需要设置另外一个头部 ，我们的cross origin演变为
+
+`@CrossOrigin(origins = {"*"},allowCredentials = "true",allowedHeaders = "*")`
+使用了allowCredentials后Access-Control-Allow-Credentials头被设置成true，同时前端设置xhrField:{withCredential:true}后，浏览器在ajax请求内带上对应的cookie头部和后端的allowCredentials配合在一起解决跨域传递cookie的问题。由于课程中仅仅使用了get和post的方法，而这两个方法在跨域请求中都是可以用的，因此allowedHeaders可以不加。
+
+另外当设置了allowCredentials = “true"的时候origins = {”*"}就失效了，因为一旦设置了跨域传递cookie就不能再设置接受任何origins了，而springboot的实现方式是返回的allow origin取request内的origin即我们自己对应的html页面的路径。这样就可以做到在哪个origin上使用跨域就允许哪个origin，一样能达到我们想要的效果。
+
+ps：许多浏览器包括safari和最新版本的chrome默认设置都是不支持携带跨域cookie的，即便我们代码写成允许，浏览器底层也做了限制，因此在调试的时候我们可以关闭对应的限制，也可以使用扩展阅读内的其他跨域处理方式

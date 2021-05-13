@@ -8,7 +8,9 @@ import org.example.dao.ItemStockDoMapper;
 import org.example.error.BusinessException;
 import org.example.error.EmBusinessError;
 import org.example.service.ItemService;
+import org.example.service.PromoService;
 import org.example.service.model.ItemModel;
+import org.example.service.model.PromoModel;
 import org.example.validator.ValidationResult;
 import org.example.validator.ValidatorImpl;
 import org.springframework.beans.BeanUtils;
@@ -33,6 +35,8 @@ public class ItemServiceImple implements ItemService {
     private ItemDoMapper itemDoMapper;
     @Autowired
     private ItemStockDoMapper itemStockDoMapper;
+    @Autowired
+    private PromoService promoService;
 
     @Override
     @Transactional  //创建item必须在同一个事务当中
@@ -81,6 +85,12 @@ public class ItemServiceImple implements ItemService {
 
         //将dataObject->model
         ItemModel itemModel=convertToModelFromDataObject(itemDo,itemStockDo);
+
+        //获取活动商品信息
+        PromoModel promoModel = promoService.getPromoByItemId(itemModel.getId());
+        if (promoModel!=null && promoModel.getStatus().intValue()!=3){
+            itemModel.setPromoModel(promoModel);
+        }
         return itemModel;
     }
 
@@ -93,7 +103,12 @@ public class ItemServiceImple implements ItemService {
     @Override
     @Transactional
     public boolean decreaseStock(Integer itemId, Integer amount) {
-        int affectedRow = itemStockDoMapper.decreaseStock(itemId, amount);
+        int affectedRow = 0;
+        try {
+            affectedRow = itemStockDoMapper.decreaseStock(itemId, amount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //true：更新库存成功    false：更新库存失败
         return affectedRow>0?true:false;
     }
