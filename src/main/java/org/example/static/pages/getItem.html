@@ -14,7 +14,7 @@
 <div class="content">
     <h3 class="form-title">商品详情</h3>
     <div id="promoStartTimeContainer" class="form-group">
-        <label style="color: blue" id="promoStatus" class="control-label"></label>
+        <label style="color: blue" id="promoStatus" class="control-label">秒杀开始时间</label>
         <div>
             <label style="color: red" class="control-label" id="promoStartTime"/>
         </div>
@@ -61,7 +61,7 @@
         </div>
     </div>
     <div class="form-actions">
-        <button class="btn blue" id="createOrder" type="submit">
+        <button class="btn blue" id="createorder" type="submit">
             下单
         </button>
     </div>
@@ -117,6 +117,7 @@
                 xhrFields: {
                     withCredentials: true
                 },
+                crossDomain:true,
                 success: function (data) {
                     if (data.status == "success") {
                         alert("下单成功");
@@ -140,7 +141,7 @@
         $("#description").text(g_itemVO.description);
         $("#stock").text(g_itemVO.stock);
         $("#price").text(g_itemVO.price);
-        $("#imgUrl").attr("src",g_itemVO.imgUrl);
+        $("#imgurl").attr("src",g_itemVO.imgurl);
         $("#sales").text(g_itemVO.sales);
         if(g_itemVO.promoStatus==1){
             //秒杀活动还未开始
@@ -157,11 +158,13 @@
             }
             $("#promoStartTime").text("秒杀活动将于: "+g_itemVO.startTime+"开始! 倒计时:"+delta+"秒");
             $("#promoPrice").text(g_itemVO.promoPrice);
+            //活动还未开始时不能下单
             $("#createorder").attr("disabled",true);
         }else if(g_itemVO.promoStatus==2){
             //秒杀活动进行中
             $("#promoStartTime").text("秒杀活动正在进行中");
             $("#promoPrice").text(g_itemVO.promoPrice);
+            // 可以下单
             $("#createorder").attr("disabled",false);
             $("#nomalPriceContainer").hide();
         }

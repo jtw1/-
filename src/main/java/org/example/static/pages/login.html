@@ -60,7 +60,7 @@
                 contentType:"application/x-www-form-urlencoded",
                 url:"http://localhost:8090/user/login",
                 data:{
-                    "telephone":telephone,
+                    "telephone":$("#telephone").val(),
                     "password":password
                 },
                 xhrFields:{withCredentials:true},

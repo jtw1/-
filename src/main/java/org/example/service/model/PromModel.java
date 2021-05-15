@@ -3,13 +3,14 @@ package org.example.service.model;
 
 import org.joda.time.DateTime;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * @Description 秒杀营销模型
  * @date 2021/4/24-15:46
  */
-public class PromModel {
+public class PromModel implements Serializable {
     private Integer id;
 
     //秒杀活动名称
