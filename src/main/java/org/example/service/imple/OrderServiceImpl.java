@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -49,11 +51,11 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderModel createOrder(Integer userId, Integer itemId,Integer promoId, Integer amount) throws BusinessException {
        //校验下单状态，下单商品是否存在，用户是否合法，购买数量是否正确
-        ItemModel itemModel = itemService.getItemById(itemId);
+        ItemModel itemModel = itemService.getItemByIdInCache(itemId);
         if (itemModel==null){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"商品信息不存在");
         }
-        UserModel userModel = userService.getUserById(userId);
+        UserModel userModel = userService.getUserByIdInCache(userId);
         if (userModel==null){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"用户信息不存在");
         }
@@ -101,6 +103,21 @@ public class OrderServiceImpl implements OrderService {
 
         //加上商品销量
         itemService.increaseSales(itemId,amount);
+
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            //最近的一个带@Transactional的事务成功commit之后才回去执行
+            @Override
+            public void afterCommit() {
+                //异步更新库存
+                boolean mqResult=itemService.asyncDecreaseStock(itemId,amount);
+//                if (!mqResult){
+//                    itemService.increaseStock(itemId,amount);
+//                    throw new BusinessException(EmBusinessError.MQ_SEND_FAIL);
+//                }
+            }
+        });
+
+
         //返回前端
         return orderModel;
     }

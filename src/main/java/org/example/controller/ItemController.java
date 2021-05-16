@@ -5,6 +5,7 @@ import org.example.error.BusinessException;
 import org.example.response.CommonReturnType;
 import org.example.service.CacheService;
 import org.example.service.ItemService;
+import org.example.service.PromoService;
 import org.example.service.model.ItemModel;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.BeanUtils;
@@ -32,6 +33,8 @@ public class ItemController extends BaseController{
     private RedisTemplate redisTemplate;
     @Autowired
     private CacheService cacheService;
+    @Autowired
+    private PromoService promoService;
 
     /**
      * 创建item
@@ -110,6 +113,13 @@ public class ItemController extends BaseController{
             return itemVO;
         }).collect(Collectors.toList());
         return CommonReturnType.create(itemVOList);
+    }
+
+    @RequestMapping(value = "/publishpromo",method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType publishPromo(@RequestParam(name="id")Integer id){
+        promoService.publishPromo(id);
+        return CommonReturnType.create(null);
     }
 
     /**

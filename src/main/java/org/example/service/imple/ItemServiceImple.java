@@ -7,6 +7,7 @@ import org.example.dao.ItemDoMapper;
 import org.example.dao.ItemStockDoMapper;
 import org.example.error.BusinessException;
 import org.example.error.EmBusinessError;
+import org.example.mq.MqProducer;
 import org.example.service.ItemService;
 import org.example.service.PromoService;
 import org.example.service.model.ItemModel;
@@ -15,12 +16,14 @@ import org.example.validator.ValidationResult;
 import org.example.validator.ValidatorImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -37,6 +40,10 @@ public class ItemServiceImple implements ItemService {
     private ItemStockDoMapper itemStockDoMapper;
     @Autowired
     private PromoService promoService;
+    @Autowired
+    private RedisTemplate redisTemplate;
+    @Autowired
+    private MqProducer mqProducer;
 
     @Override
     @Transactional  //创建item必须在同一个事务当中
@@ -95,6 +102,23 @@ public class ItemServiceImple implements ItemService {
     }
 
     /**
+     * 从缓存中获取 itemModel
+     * @param id
+     * @return
+     */
+    @Override
+    public ItemModel getItemByIdInCache(Integer id) {
+        ItemModel itemModel = (ItemModel) redisTemplate.opsForValue().get("item_validate_"+ id);
+        if (itemModel==null){
+            itemModel=this.getItemById(id);
+            redisTemplate.opsForValue().set("item_validate_" + id,itemModel);
+            //设置有效期
+            redisTemplate.expire("item_validate_" + id,10, TimeUnit.MINUTES);
+        }
+        return itemModel;
+    }
+
+    /**
      * 库存扣减
      * @param itemId 商品id
      * @param amount 需要的商品数量
@@ -102,15 +126,22 @@ public class ItemServiceImple implements ItemService {
      */
     @Override
     @Transactional
-    public boolean decreaseStock(Integer itemId, Integer amount) {
-        int affectedRow = 0;
-        try {
-            affectedRow = itemStockDoMapper.decreaseStock(itemId, amount);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public boolean decreaseStock(Integer itemId, Integer amount) throws BusinessException {
+        //int affectedRow = itemStockDoMapper.decreaseStock(itemId, amount);
+        long result=redisTemplate.opsForValue().increment("promo_item_stock_"+itemId,amount.intValue()*(-1));
         //true：更新库存成功    false：更新库存失败
-        return affectedRow>0?true:false;
+        if(result >0){
+            //更新库存成功
+            return true;
+        }else if(result == 0){
+            //打上库存已售罄的标识
+            redisTemplate.opsForValue().set("promo_item_stock_invalid_"+itemId,"true");
+            return true;
+        }else{
+            //更新库存失败
+            increaseStock(itemId,amount);
+            return false;
+        }
     }
 
     /**
@@ -123,6 +154,20 @@ public class ItemServiceImple implements ItemService {
     @Transactional
     public void increaseSales(Integer itemId, Integer amount) throws BusinessException {
         itemDoMapper.increaseSales(itemId,amount);
+    }
+
+    //库存回补
+    @Override
+    public boolean increaseStock(Integer itemId, Integer amount) throws BusinessException {
+        redisTemplate.opsForValue().increment("promo_item_stock_"+itemId,amount.intValue());
+        return true;
+    }
+
+    //异步更新库存
+    @Override
+    public boolean asyncDecreaseStock(Integer itemId, Integer amount) {
+        boolean mqResult = mqProducer.asyncReduceStock(itemId,amount);
+        return mqResult;
     }
 
     /**

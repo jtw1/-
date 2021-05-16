@@ -2,12 +2,15 @@ package org.example.service.imple;
 
 import org.example.DataObject.PromoDo;
 import org.example.dao.PromoDoMapper;
+import org.example.service.ItemService;
 import org.example.service.PromoService;
+import org.example.service.model.ItemModel;
 import org.example.service.model.PromModel;
 import org.example.service.model.PromoModel;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,6 +24,11 @@ public class PromoServiceImpl implements PromoService {
 
     @Autowired
     private PromoDoMapper promoDoMapper;
+    @Autowired
+    private ItemService itemService;
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Override
     public PromoModel getPromoByItemId(Integer itemId) {
         PromoDo promoDo = promoDoMapper.selectByItemId(itemId);
@@ -42,6 +50,22 @@ public class PromoServiceImpl implements PromoService {
         }
 
         return promoModel;
+    }
+
+    /**
+     * 活动发布时，同步库存到redis缓存（此时忽略活动发布时有下单行为的情况）
+     * @param promoId
+     */
+    @Override
+    public void publishPromo(Integer promoId) {
+        //通过活动id获取活动
+        PromoDo promoDo=promoDoMapper.selectByPrimaryKey(promoId);
+        if (promoDo.getItemId()==null || promoDo.getItemId().intValue()==0) return;
+
+        ItemModel itemModel = itemService.getItemById(promoDo.getItemId());
+
+        //将库存同步到redis
+        redisTemplate.opsForValue().set("promo_item_stock_"+itemModel.getId(),itemModel.getStock());
     }
 
 
