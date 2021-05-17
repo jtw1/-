@@ -2,8 +2,10 @@ package org.example.service.imple;
 
 import org.example.DataObject.OrderDo;
 import org.example.DataObject.SequenceDo;
+import org.example.DataObject.StockLogDo;
 import org.example.dao.OrderDoMapper;
 import org.example.dao.SequenceDoMapper;
+import org.example.dao.StockLogDoMapper;
 import org.example.error.BusinessException;
 import org.example.error.EmBusinessError;
 import org.example.service.ItemService;
@@ -39,6 +41,9 @@ public class OrderServiceImpl implements OrderService {
     private OrderDoMapper orderDoMapper;
     @Autowired
     private SequenceDoMapper sequenceDoMapper;
+    @Autowired
+    private StockLogDoMapper stockLogDoMapper;
+
     /**
      * 创建订单
      * @param userId 下单用户
@@ -49,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     @Transactional
-    public OrderModel createOrder(Integer userId, Integer itemId,Integer promoId, Integer amount) throws BusinessException {
+    public OrderModel createOrder(Integer userId, Integer itemId,Integer promoId, Integer amount,String stockLogId) throws BusinessException {
        //校验下单状态，下单商品是否存在，用户是否合法，购买数量是否正确
         ItemModel itemModel = itemService.getItemByIdInCache(itemId);
         if (itemModel==null){
@@ -95,28 +100,34 @@ public class OrderServiceImpl implements OrderService {
 
         // 生成订单号
         orderModel.setId(generateOrderNumber());
-
         OrderDo orderDo=convertFromOrderModel(orderModel);
-
         orderDoMapper.insertSelective(orderDo);
 
 
         //加上商品销量
         itemService.increaseSales(itemId,amount);
 
-        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-            //最近的一个带@Transactional的事务成功commit之后才回去执行
-            @Override
-            public void afterCommit() {
-                //异步更新库存
-                boolean mqResult=itemService.asyncDecreaseStock(itemId,amount);
-//                if (!mqResult){
-//                    itemService.increaseStock(itemId,amount);
-//                    throw new BusinessException(EmBusinessError.MQ_SEND_FAIL);
-//                }
-            }
-        });
+        //设置库存流水状态为成功
+        StockLogDo stockLogDo=stockLogDoMapper.selectByPrimaryKey(stockLogId);
+        if (stockLogDo==null){
+            throw new BusinessException(EmBusinessError.UNKNOWN_ERROR);
+        }
+        stockLogDo.setStatus(2);  //2表示下单库存扣减成功
+        //更新数据库
+        stockLogDoMapper.updateByPrimaryKeySelective(stockLogDo);
 
+//        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+//            //最近的一个带@Transactional的事务成功commit之后才回去执行
+//            @Override
+//            public void afterCommit() {
+//                //异步更新库存
+//                boolean mqResult=itemService.asyncDecreaseStock(itemId,amount);
+////                if (!mqResult){
+////                    itemService.increaseStock(itemId,amount);
+////                    throw new BusinessException(EmBusinessError.MQ_SEND_FAIL);
+////                }
+//            }
+//        });
 
         //返回前端
         return orderModel;

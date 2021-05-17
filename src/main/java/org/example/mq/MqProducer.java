@@ -7,6 +7,8 @@ import org.apache.rocketmq.client.producer.*;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.remoting.exception.RemotingException;
+import org.example.DataObject.StockLogDo;
+import org.example.dao.StockLogDoMapper;
 import org.example.error.BusinessException;
 import org.example.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +36,13 @@ public class MqProducer {
     @Value("${mq.topicname}")
     private String topicName;
 
-
     @Autowired
     private OrderService orderService;
-
     @Autowired
-    private StockLogDOMapper stockLogDOMapper;
+    private StockLogDoMapper stockLogDoMapper;
+
+//    @Autowired
+//    private StockLogDOMapper stockLogDOMapper;
 
     @PostConstruct
     public void init() throws MQClientException {
@@ -66,9 +69,9 @@ public class MqProducer {
                 } catch (BusinessException e) {
                     e.printStackTrace();
                     //设置对应的stockLog为回滚状态
-                    StockLogDO stockLogDO = stockLogDOMapper.selectByPrimaryKey(stockLogId);
+                    StockLogDo stockLogDO = stockLogDoMapper.selectByPrimaryKey(stockLogId);
                     stockLogDO.setStatus(3);
-                    stockLogDOMapper.updateByPrimaryKeySelective(stockLogDO);
+                    stockLogDoMapper.updateByPrimaryKeySelective(stockLogDO);
                     return LocalTransactionState.ROLLBACK_MESSAGE;
                 }
                 return LocalTransactionState.COMMIT_MESSAGE;
@@ -82,7 +85,7 @@ public class MqProducer {
                 Integer itemId = (Integer) map.get("itemId");
                 Integer amount = (Integer) map.get("amount");
                 String stockLogId = (String) map.get("stockLogId");
-                StockLogDO stockLogDO = stockLogDOMapper.selectByPrimaryKey(stockLogId);
+                StockLogDo stockLogDO = stockLogDoMapper.selectByPrimaryKey(stockLogId);
                 if(stockLogDO == null){
                     return LocalTransactionState.UNKNOW;
                 }

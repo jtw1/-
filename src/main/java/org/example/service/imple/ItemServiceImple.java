@@ -1,10 +1,11 @@
 package org.example.service.imple;
 
 import org.example.DataObject.ItemDo;
-import org.example.DataObject.ItemDoExample;
 import org.example.DataObject.ItemStockDo;
+import org.example.DataObject.StockLogDo;
 import org.example.dao.ItemDoMapper;
 import org.example.dao.ItemStockDoMapper;
+import org.example.dao.StockLogDoMapper;
 import org.example.error.BusinessException;
 import org.example.error.EmBusinessError;
 import org.example.mq.MqProducer;
@@ -21,8 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -44,6 +45,8 @@ public class ItemServiceImple implements ItemService {
     private RedisTemplate redisTemplate;
     @Autowired
     private MqProducer mqProducer;
+    @Autowired
+    private StockLogDoMapper stockLogDoMapper;
 
     @Override
     @Transactional  //创建item必须在同一个事务当中
@@ -168,6 +171,25 @@ public class ItemServiceImple implements ItemService {
     public boolean asyncDecreaseStock(Integer itemId, Integer amount) {
         boolean mqResult = mqProducer.asyncReduceStock(itemId,amount);
         return mqResult;
+    }
+
+    /**
+     * 初始化对应的库存流水
+     * @param itemId
+     * @param amount
+     * @return
+     */
+    @Override
+    public String initStockLog(Integer itemId, Integer amount) {
+        StockLogDo stockLogDo = new StockLogDo();
+        stockLogDo.setItemId(itemId);
+        stockLogDo.setAmount(amount);
+
+        stockLogDo.setStockLogId(UUID.randomUUID().toString().replace("-", ""));
+        stockLogDo.setStatus(1);
+
+        stockLogDoMapper.insertSelective(stockLogDo);
+        return stockLogDo.getStockLogId();
     }
 
     /**

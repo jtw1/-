@@ -19,7 +19,7 @@ public interface OrderService {
      * @param amount  用户购买的商品数量
      * @return
      */
-    OrderModel createOrder(Integer userId,Integer itemId,Integer promoId,Integer amount) throws BusinessException;
+    OrderModel createOrder(Integer userId,Integer itemId,Integer promoId,Integer amount,String stockLogId) throws BusinessException;
 
 
 }
