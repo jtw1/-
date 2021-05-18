@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.error.BusinessException;
 import org.example.service.model.PromModel;
 import org.example.service.model.PromoModel;
 
@@ -13,4 +14,7 @@ public interface PromoService {
 
     //活动发布
     void publishPromo(Integer promoId);
+
+    //生成秒杀用的令牌
+    String generateSecondKillToken(Integer promoId,Integer itemId,Integer userId) throws BusinessException;
 }
