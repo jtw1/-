@@ -1,7 +1,6 @@
 package org.example.service;
 
 import org.example.error.BusinessException;
-import org.example.service.model.PromModel;
 import org.example.service.model.PromoModel;
 
 /**
