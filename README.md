@@ -55,3 +55,53 @@ Access-Control-Allow-Headers * 两个头部，这样可以满足CORS的跨域定
 另外当设置了allowCredentials = “true"的时候origins = {”*"}就失效了，因为一旦设置了跨域传递cookie就不能再设置接受任何origins了，而springboot的实现方式是返回的allow origin取request内的origin即我们自己对应的html页面的路径。这样就可以做到在哪个origin上使用跨域就允许哪个origin，一样能达到我们想要的效果。
 
 ps：许多浏览器包括safari和最新版本的chrome默认设置都是不支持携带跨域cookie的，即便我们代码写成允许，浏览器底层也做了限制，因此在调试的时候我们可以关闭对应的限制，也可以使用扩展阅读内的其他跨域处理方式
+
+> 分布式会话管理
+
+1. 基于cookie传输sessionID：java tomcat容器内嵌session实现 迁移到redis    (详见工程代码  controller/UserController.java  的login方法中)
+
+2. 基于token传输类似sessionID：Java代码session实现迁移到redis。token比cookie更为安全，且存储容量更大
+
+   ```java
+   @Autowired
+   //先引入redisTemplate
+   private RedisTemplate redisTemplate;  
+   
+   // 生成登陆凭证token，UUID
+   String uuidToken = UUID.randomUUID().toString();
+   uuidToken=uuidToken.replace("-","");
+   //建立token和用户登录态之间的联系
+   redisTemplate.opsForValue().set(uuidToken,userModel);
+   //设置过期时间
+   redisTemplate.expire(uuidToken,1, TimeUnit.HOURS);
+   //最后下发token
+   return CommonReturnType.create(uuidToken);
+   ```
+
+   前端页面对应的更改
+
+   ```javascript
+   success:function(data){
+        if (data.status == "success") {
+            alert("登陆成功");
+            // 引入登录的token后，需添加以下部分
+            var token=data.data;
+    		window.localStorage["token"]=token;                     window.location.href="listItem.html";
+         }
+   ```
+
+   OrderController.java的createOrder方法中，登录验证为
+
+   ```java
+   String token = httpServletRequest.getParameterMap().get("token")[0];
+   if(StringUtils.isEmpty(token)){
+               throw new BusinessException(EmBusinessError.USER_NOT_LOGIN,"用户还未登陆，不能下单");
+           }
+           //获取用户的登陆信息
+   UserModel userModel = (UserModel) redisTemplate.opsForValue().get(token);
+   if(userModel == null){
+     throw new BusinessException(EmBusinessError.USER_NOT_LOGIN,"用户还未登陆，不能下单");
+   }
+   ```
+
+   

@@ -152,15 +152,15 @@ public class OrderController extends BaseController{
         }
 
         //校验秒杀令牌是否正确
-        if(promoId != null){
-            String inRedisPromoToken = (String) redisTemplate.opsForValue().get("promo_token_"+promoId+"_userid_"+userModel.getId()+"_itemid_"+itemId);
-            if(inRedisPromoToken == null){
-                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"秒杀令牌校验失败");
-            }
-            if(!org.apache.commons.lang3.StringUtils.equals(promoToken,inRedisPromoToken)){
-                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"秒杀令牌校验失败");
-            }
-        }
+//        if(promoId != null){
+//            String inRedisPromoToken = (String) redisTemplate.opsForValue().get("promo_token_"+promoId+"_userid_"+userModel.getId()+"_itemid_"+itemId);
+//            if(inRedisPromoToken == null){
+//                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"秒杀令牌校验失败");
+//            }
+//            if(!org.apache.commons.lang3.StringUtils.equals(promoToken,inRedisPromoToken)){
+//                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"秒杀令牌校验失败");
+//            }
+//        }
 
         //同步调用线程池的submit方法
         //拥塞窗口为20的等待队列，用来队列化泄洪

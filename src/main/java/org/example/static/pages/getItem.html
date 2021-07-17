@@ -105,10 +105,15 @@
 
         //下单请求
         $("#createorder").on("click",function () {
+            var token=window.localStorage["token"];
+            if (token==null){
+                alert("没有登陆，不能下单");
+                return false;
+            }
             $.ajax({
                 type: "POST",
                 contentType: "application/x-www-form-urlencoded",
-                url: "http://localhost:8090/order/createorder",
+                url: "http://localhost:8090/order/createorder?token="+token,
                 data: {
                     "itemId": g_itemVO.id,
                     "amount": 1,

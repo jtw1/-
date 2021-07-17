@@ -10,6 +10,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Component;
  * @date 2021/5/15-17:14
  */
 @Component
+// 将http的session放到redis内，以完成分布式会话的集中管理
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 3600)
 public class RedisConfig {
     @Bean
     public RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory){
