@@ -56,7 +56,7 @@ Access-Control-Allow-Headers * 两个头部，这样可以满足CORS的跨域定
 
 ps：许多浏览器包括safari和最新版本的chrome默认设置都是不支持携带跨域cookie的，即便我们代码写成允许，浏览器底层也做了限制，因此在调试的时候我们可以关闭对应的限制，也可以使用扩展阅读内的其他跨域处理方式
 
-> 分布式会话管理
+###  分布式会话管理 
 
 1. 基于cookie传输sessionID：java tomcat容器内嵌session实现 迁移到redis    (详见工程代码  controller/UserController.java  的login方法中)
 
@@ -104,4 +104,124 @@ ps：许多浏览器包括safari和最新版本的chrome默认设置都是不支
    }
    ```
 
-   
+
+
+
+### 缓存设计原则
+
+1. 用快速存取设备，用内存
+2. 将缓存推到离用户最近的地方
+3. 脏缓存清理
+
+redis缓存
+
+1. 单机版
+2. sentinal哨兵模式
+3. 集群cluster模式
+
+> redis集中式缓存商品详情页介入
+
+一般是在springMVC的controller层将redis引入，在下游service层获取到的数据在controller层缓存起来，以便下次再有任何请求进来时，判断缓存中是否有对应数据，如果有，直接返回，不走下游service层调用，减少对数据库的依赖
+
+```Java
+@RequestMapping(value = "/get",method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType getItem(@RequestParam(name="id")Integer id){
+        ItemModel itemModel= null;
+        //先取本地缓存
+        itemModel=(ItemModel)cacheService.getFromCommonCache("item_"+id);
+
+        //若本地缓存不存在
+        if (itemModel==null){
+            //再取redis中的，根据商品id到redis内获取
+            itemModel = (ItemModel)redisTemplate.opsForValue().get("item_"+id);
+
+            //若redis内不存在对应的itemModel，则访问下游service
+            if (itemModel==null){
+                itemModel = itemService.getItemById(id);
+                //设置itemModel到redis内，并加一个过期时间
+                redisTemplate.opsForValue().set("item_"+id,itemModel);
+                redisTemplate.expire("item_"+id,10, TimeUnit.MINUTES);
+            }
+            //填充本地缓存
+            cacheService.setCommonCache("item_"+id,itemModel);
+        }
+
+        ItemVO itemVO=convertVOFromModel(itemModel);
+
+        return CommonReturnType.create(itemVO);
+    }
+```
+
+接入缓存详情页之后    TPS由1500多，平均耗时350ms        提升到2000多，平均耗时200ms左右
+
+> 本地热点缓存
+
+1. 存放热点数据
+2. 脏读非常不敏感
+3. 内存可控
+
+用`Guava cache`实现本地热点缓存，pom文件中引入jar包
+
+```xml
+<!--本地热点缓存-->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>18.0</version>
+    </dependency>
+```
+
+本地缓存操作类  `CacheService.java`,  `CacheServiceImpl.java`。
+
+接入本地缓存之后    TPS由2000多，平均耗时200ms        提升到3500左右，平均耗时100ms左右
+
+缺点
+
+1. 数据更新时，本地热点缓存没有任何效果
+2. JVM容量大小限制
+
+> ngnix proxy cache缓存
+
+1. ngnix反向代理前置
+2. 依靠文件系统存索引级文件
+3. 依靠内存缓存文件地址
+
+> 静态请求CDN（内容分发网络）
+
+1. DNS用CNAME解析到源站
+2. 回源缓存设置
+3. 强推失效
+
+> 静态资源部署策略
+
+css ,js, img等元素使用摘要做文件名部署，新老版本并存且可以回滚，资源部署完后再部署html
+
+html文件设置no-cache或较短max age，以便于更新
+
+HTML文件仍然设置较长的max age，依靠动态获取版本号请求发送到后端，异步下载最新的版本号的html后展示渲染在前端
+
+>  全页面静态化
+
+在服务端完成html，css，甚至js的load渲染成纯html文件后直接以静态资源的方式部署到cdn
+
+>  phantomjs应用
+
+1. 修改需要全页面静态化的实现，采用initView和hasInit方式，防止多次初始化
+2. 编写对应轮讯生成内容方式
+3. 将全页面静态化生成后推送到cdn
+
+见pages/getItemPhantom.html
+
+> 思考: **使用全页面静态化技术之后，对应的缓存更新就变得非常困难，是否可以考虑将对应的商品模型做更细力度的拆分并使用不同的缓存策略？** 
+
+对于价格、库存实时性要求高的每次都到服务端拿最新的值；对于sku中其他的属性取CDN内容就行，如果这些实时性要求不高的属性变化了，上游系统发给我们属性变更的消息，我们拿到这个消息出发脚本重新执行一遍无头js，然后把生成的html文件再推倒CDN
+
+>  **诸如phantomjs样的无头浏览器除了做全页面静态化技术**  **，还可以做哪些功效使用？** 
+
+人机交互爬虫  自动化工具（如自动提交表单），定时监控工具（定时截图发周报）等
+
+>  **全页面静态化技术如何在互联网环境下做到可及时下架 ?** 
+
+ 商品变动或下架后，由后端系统触发异步消息给某一个服务，这个服务负责调用爬虫重新生成最新的页面后推送给cdn服务，这些都是需要api对接的 
+
